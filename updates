@@ -1,0 +1,7 @@
+Name:test_hanzhijun
+Suite: plum
+Architectures: i386 amd64 source
+Components: main contrib non-free
+Method: http://10.5.11.186/ppa-test/ 
+VerifyRelease: blindtrust
+jdbc.url:value_a
