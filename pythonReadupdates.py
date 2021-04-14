@@ -16,10 +16,11 @@ class Properties:
             for line in fopen:
                 line = line.strip()
                 if line.find(':') > 0 and not line.startswith('#'):
-                    strs = line.split(':')
+                    #分割时考虑到Method字段对应的value中是httpd地址，会包含分割符:,因此指定只分割未两部分
+                    strs = line.split(':',1)
                     self.properties[strs[0].strip()] = strs[1].strip()
         except Exception :
-            raise e
+            print("文件不存在，先创建updates文件")
         else:
             fopen.close()
 
@@ -33,7 +34,7 @@ class Properties:
 
     def set(self, key, value):
         self.properties[key] = value
-        replace(self.file_name, key + ':.*', key + ':' + value, True)
+        replace(self.file_name, key + ':.*', key + ': ' + value, True)
 
 
 def replace(file_name, from_regex, to_str, append_on_not_exists=True):
@@ -68,16 +69,27 @@ def replace(file_name, from_regex, to_str, append_on_not_exists=True):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-t','--test',help="this is a test")
-    parser.add_argument('-f','--filename',help="file name")
-    parser.add_argument('-m','--Method',help="指定Method链接")
-    args = parser.parse_args()
-    print(args.filename)
+    parser.add_argument('-f','--filename',help="指定需要操作的文件,默认为当前目录下的updates文件",default='updates')
+    parser.add_argument('-N','--Name',help="指定Name,默认为update_from_crp",default='update_from_crp')
+    parser.add_argument('-s','--Suite',help="指定Suite",default='unstable')
+    parser.add_argument('-A','--Architectures',help="指定Architectures",default='main')
+    parser.add_argument('-m','--Method',help="指定Method链接",required=True)
+    parser.add_argument('-v','--VerifyRelease',help="指定VerifyRelease",default='blindtrust')
 
-    file_path = 'updates'
-    props = Properties(file_path)  # 读取文件
-    props.set('jdbc.url', 'value_a')  # 修改/添加key=value
-    print (props.get('key_a'))  # 根据key读取value
+    #初始化参数
+    args = parser.parse_args()
+    print(args.Name)
+    
+    #读取文件
+    props = Properties(args.filename)  # 读取文件
+    #根据配置生成文件
+    props.set('Name',args.Name)
+    props.set('Suite',args.Suite)
+    props.set('Aechitectures',args.Architectures)
+    props.set('Method',args.Method)
+    props.set('VerifyRelease',args.VerifyRelease)
+
+    print(props.properties)
 
 if __name__ == "__main__":
     main()
