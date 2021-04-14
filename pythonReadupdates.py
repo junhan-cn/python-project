@@ -67,14 +67,20 @@ def replace(file_name, from_regex, to_str, append_on_not_exists=True):
     else:
         print ("file %s not found" % file_name)
 
+def checkppa:
+
+
+def updateppa:
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--filename',help="指定需要操作的文件,默认为当前目录下的updates文件",default='updates')
     parser.add_argument('-N','--Name',help="指定Name,默认为update_from_crp",default='update_from_crp')
-    parser.add_argument('-s','--Suite',help="指定Suite",default='unstable')
-    parser.add_argument('-A','--Architectures',help="指定Architectures",default='main')
-    parser.add_argument('-m','--Method',help="指定Method链接",required=True)
-    parser.add_argument('-v','--VerifyRelease',help="指定VerifyRelease",default='blindtrust')
+    parser.add_argument('-S','--Suite',help="指定Suite",default='unstable')
+    parser.add_argument('-A','--Architectures',help="指定Architectures",default='i386 amd64')
+    parser.add_argument('-C','--Components',help="指定Components",default='main')
+    parser.add_argument('-M','--Method',help="指定Method链接",required=True)
+    parser.add_argument('-V','--VerifyRelease',help="指定VerifyRelease",default='blindtrust')
 
     #初始化参数
     args = parser.parse_args()
@@ -85,11 +91,15 @@ def main():
     #根据配置生成文件
     props.set('Name',args.Name)
     props.set('Suite',args.Suite)
-    props.set('Aechitectures',args.Architectures)
+    props.set('Architectures',args.Architectures)
+    props.set('Components',args.Components)
     props.set('Method',args.Method)
     props.set('VerifyRelease',args.VerifyRelease)
 
     print(props.properties)
+    
+    #更新ppa仓库
+
 
 if __name__ == "__main__":
     main()
