@@ -67,11 +67,6 @@ def replace(file_name, from_regex, to_str, append_on_not_exists=True):
     else:
         print ("file %s not found" % file_name)
 
-def checkppa:
-
-
-def updateppa:
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f','--filename',help="指定需要操作的文件,默认为当前目录下的updates文件",default='updates')
@@ -98,8 +93,6 @@ def main():
 
     print(props.properties)
     
-    #更新ppa仓库
-
 
 if __name__ == "__main__":
     main()
